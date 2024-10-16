@@ -7,46 +7,43 @@
         <h1>JOB SEARCH PORTAL</h1>
     </header><br>
     <h3>
-        function showSection(sectionId) {
-            document.querySelectorAll('.content').forEach(function(section) {
-                section.classList.remove('active');
-            });
-            document.getElementById(sectionId).classList.add('active');
-        }
-     const API_URL = 'http://localhost:3000';
+        function showSection(sectionId) {<br>
+            document.querySelectorAll('.content').forEach(function(section) {<br>
+                section.classList.remove('active');<br>
+            });<br>
+            document.getElementById(sectionId).classList.add('active');<br>
+        }<br>
+     const API_URL = 'http://localhost:3000';<br>
      // Add user
-        document.getElementById('addUserForm').querySelector('form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            var name = document.getElementById('name').value;
-            var email = document.getElementById('email').value;
-            fetch(API_URL + '/users', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name: name, email: email })
-            }).then(function() { 
-                alert('User added successfully!'); 
-            });
-        });
+        document.getElementById('addUserForm').querySelector('form').addEventListener('submit', function(e) {<br>
+            e.preventDefault();<br>
+            var name = document.getElementById('name').value;<br>
+            var email = document.getElementById('email').value;<br>
+            fetch(API_URL + '/users', {<br>
+                method: 'POST',<br>
+                headers: { 'Content-Type': 'application/json' },<br>
+                body: JSON.stringify({ name: name, email: email })<br>
+            }).then(function() { <br>
+                alert('User added successfully!'); <br>
+            });<br>
+        });<br>
      // Add a new user
-app.post('/users', function(req, res) {
-  const { name, email } = req.body;
-  const query = 'INSERT INTO users (name, email) VALUES (?, ?)';
-  db.query(query, [name, email], function(err) {
-    if (err) {
-      console.log('Error inserting user:', err);
-      res.status(500).send('Error inserting user');
-    } else {
-      res.send('User added successfully');
-    }
-  });
-});
+app.post('/users', function(req, res) {<br>
+  const { name, email } = req.body;<br>
+  const query = 'INSERT INTO users (name, email) VALUES (?, ?)';<br>
+  db.query(query, [name, email], function(err) {<br>
+    if (err) {<br>
+      console.log('Error inserting user:', err);<br>
+      res.status(500).send('Error inserting user');<br>
+    } else {<br>
+      res.send('User added successfully');<br>
+    }<br>
+  });<br>
+});<br>
 
-app.listen(port, function() {
-  console.log(`Server running on http://localhost:${port}`);
-});
-
-
-    </h3>
-
+app.listen(port, function() {<br>
+  console.log(`Server running on http://localhost:${port}`);<br>
+});<br>
+</h3>
 </body>
 </html>
