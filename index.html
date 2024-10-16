@@ -42,26 +42,52 @@ input,textarea{
     <header>
         <h1>JOB SEARCH PORTAL</h1>
     </header><br>
-    <h4>Note:This is a site to register for job vaccancies</h4>
-    <h2 style="color: darkgreen;">Enter your information</h2>
-    <div>
-    <label for="name">Name:</label>
-    <input type="name" id="=name" name="name"required><br><br>
-    <label for="phone">Phone No:</label>
-    <input type="tel" id="phone" name="phone"required><br><br>
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email"requrired><br><br>
-    <label for="graduate">Degree:</label>
-    <input type="text" id="degree" name="degree"requrired><br><br>
-    <label for="year">Year of passing:</label>
-    <input type="year" id="year" name="year"requrired><br><br>
-    <label for="suggestion">Enter your skills:</label><br>
-    <textarea id="suggestion" name="suggestion" rows="4" cols="50" required></textarea>
-    <br>
-    <br>
-    </div>
+    <h3>    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.content').forEach(function(section) {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
 
-    <a href="image.html" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border: none; border-radius: 5px; font-size: 16px; text-align: center;" role="button">Submit</a>
+        const API_URL = 'http://localhost:3000';
+
+        // Add user
+        document.getElementById('addUserForm').querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var name = document.getElementById('name').value;
+            var email = document.getElementById('email').value;
+            fetch(API_URL + '/users', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: name, email: email })
+            }).then(function() { 
+                alert('User added successfully!'); 
+            });
+        });
+
+
+       </script>
+     // Add a new user
+app.post('/users', function(req, res) {
+  const { name, email } = req.body;
+  const query = 'INSERT INTO users (name, email) VALUES (?, ?)';
+  db.query(query, [name, email], function(err) {
+    if (err) {
+      console.log('Error inserting user:', err);
+      res.status(500).send('Error inserting user');
+    } else {
+      res.send('User added successfully');
+    }
+  });
+});
+
+app.listen(port, function() {
+  console.log(`Server running on http://localhost:${port}`);
+});
+
+
+</h3>
     <footer>
         <h4><marquee behavior="scroll" direction="left" scrollamount="25">&copy;Job search</marquee></h4>
     </footer>
