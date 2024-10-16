@@ -27,7 +27,32 @@
                 alert('User added successfully!'); <br>
             });<br>
         });<br>
-     // Add a new user
+     const express = require('express');<br>
+const mysql = require('mysql2');<br>
+const cors = require('cors');<br>
+const app = express();<br>
+const port = 3000;<br>
+
+// Middleware<br>
+app.use(express.json());<br>
+app.use(cors()); // Enable cross-origin requests from the frontend<br>
+
+// MySQL connection<br>
+const db = mysql.createConnection({<br>
+  host: 'localhost',<br>
+  user: 'root',<br>
+  password: '',<br>
+  database: 'testdb1'<br>
+});<br>
+// Connect to MySQL<br>
+db.connect(function(err) {<br>
+  if (err) {<br>
+    console.log('Error connecting to MySQL:', err);<br>
+    return;<br>
+  }<br>
+  console.log('Connected to MySQL');<br>
+});<br>
+// Add a new user<br>
 app.post('/users', function(req, res) {<br>
   const { name, email } = req.body;<br>
   const query = 'INSERT INTO users (name, email) VALUES (?, ?)';<br>
