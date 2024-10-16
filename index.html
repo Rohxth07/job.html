@@ -6,7 +6,7 @@
     <header>
         <h1>JOB SEARCH PORTAL</h1>
     </header><br>
-    <h3>    <script>
+    <h3>
         function showSection(sectionId) {
             document.querySelectorAll('.content').forEach(function(section) {
                 section.classList.remove('active');
@@ -27,9 +27,6 @@
                 alert('User added successfully!'); 
             });
         });
-
-
-       </script>
      // Add a new user
 app.post('/users', function(req, res) {
   const { name, email } = req.body;
@@ -49,10 +46,7 @@ app.listen(port, function() {
 });
 
 
-</h3>
-    <footer>
-        <h4><marquee behavior="scroll" direction="left" scrollamount="25">&copy;Job search</marquee></h4>
-    </footer>
+    </h3>
 
 </body>
 </html>
