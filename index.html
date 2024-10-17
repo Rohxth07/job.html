@@ -30,11 +30,9 @@ const mysql = require('mysql2');<br>
 const cors = require('cors');<br>
 const app = express();<br>
 const port = 3000;<br>
-
 // Middleware<br>
 app.use(express.json());<br>
 app.use(cors()); // Enable cross-origin requests from the frontend<br>
-
 // MySQL connection<br>
 const db = mysql.createConnection({<br>
   host: 'localhost',<br>
@@ -63,7 +61,6 @@ app.post('/users', function(req, res) {<br>
     }<br>
   });<br>
 });<br>
-
 app.listen(port, function() {<br>
   console.log(`Server running on http://localhost:${port}`);<br>
 });<br>
