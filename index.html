@@ -1,7 +1,4 @@
 <html>
-<head>
- <title>Job Search Portal</title>
-</head>
 <body>
     <h3>
         function showSection(sectionId) {<br>
@@ -10,8 +7,10 @@
             });<br>
             document.getElementById(sectionId).classList.add('active');<br>
         }<br>
-     const API_URL = 'http://localhost:3000';<br>
-     // Add user
+
+        const API_URL = 'http://localhost:3000';<br>
+
+        // Add user<br>
         document.getElementById('addUserForm').querySelector('form').addEventListener('submit', function(e) {<br>
             e.preventDefault();<br>
             var name = document.getElementById('name').value;<br>
@@ -21,8 +20,23 @@
                 headers: { 'Content-Type': 'application/json' },<br>
                 body: JSON.stringify({ name: name, email: email })<br>
             }).then(function() { <br>
-                alert('User added successfully!'); <br>
+                alert('User added successfully!');<br> 
             });<br>
+        });<br>
+        // Get all users<br>
+        document.getElementById('getUsersBtn').addEventListener('click', function() {<br>
+            fetch(API_URL + '/users')<br>
+                .then(function(response) {<br>
+                    return response.json();<br>
+                })<br>
+                .then(function(users) {<br>
+                    var tbody = document.querySelector('#usersTable tbody');<br>
+                    tbody.innerHTML = '';<br>
+                    users.forEach(function(user) {<br>
+                        var row = '<tr><td>' + user.id + '</td><td>' + user.name + '</td><td>' + user.email + '</td></tr>';<br>
+                        tbody.innerHTML += row;<br>
+                    });<br>
+                });<br>
         });<br>
      server.js<br>
      const express = require('express');<br>
@@ -30,16 +44,19 @@ const mysql = require('mysql2');<br>
 const cors = require('cors');<br>
 const app = express();<br>
 const port = 3000;<br>
+
 // Middleware<br>
 app.use(express.json());<br>
 app.use(cors()); // Enable cross-origin requests from the frontend<br>
+
 // MySQL connection<br>
 const db = mysql.createConnection({<br>
   host: 'localhost',<br>
   user: 'root',<br>
-  password: '',<br>
-  database: 'testdb1'<br>
+  password: '', // Your MySQL root password<br>
+  database: 'testdb1' // Your MySQL database name<br>
 });<br>
+
 // Connect to MySQL<br>
 db.connect(function(err) {<br>
   if (err) {<br>
@@ -48,6 +65,7 @@ db.connect(function(err) {<br>
   }<br>
   console.log('Connected to MySQL');<br>
 });<br>
+
 // Add a new user<br>
 app.post('/users', function(req, res) {<br>
   const { name, email } = req.body;<br>
@@ -61,9 +79,55 @@ app.post('/users', function(req, res) {<br>
     }<br>
   });<br>
 });<br>
+
+/ Get all users<br>
+app.get('/users', function(req, res) {<br>
+  const query = 'SELECT * FROM users';<br>
+  db.query(query, function(err, results) {<br>
+    if (err) {<br>
+      console.log('Error retrieving users:', err);<br>
+      res.status(500).send('Error retrieving users');<br>
+    } else {<br>
+      res.json(results);<br>
+    }<br>
+  });<br>
+});<br>
+
+// Update a user<br>
+app.put('/users/:id', function(req, res) {<br>
+  const { id } = req.params;<br>
+  const { name, email } = req.body;<br>
+  const query = 'UPDATE users SET name = ?, email = ? WHERE id = ?';<br>
+  db.query(query, [name, email, id], function(err) {<br>
+    if (err) {<br>
+      console.log('Error updating user:', err);<br>
+      res.status(500).send('Error updating user');<br>
+    } else {<br>
+      res.send('User updated successfully');<br>
+    }<br>
+  });<br>
+});<br>
+
+// Delete a user<br>
+app.delete('/users/:id', function(req, res) {<br>
+  const { id } = req.params;<br>
+  const query = 'DELETE FROM users WHERE id = ?';<br>
+  db.query(query, [id], function(err) {<br>
+    if (err) {<br>
+      console.log('Error deleting user:', err);<br>
+      res.status(500).send('Error deleting user');<br>
+    } else {<br>
+      res.send('User deleted successfully');<br>
+    }<br>
+  });<br>
+});<br>
+
+// Start the server<br>
 app.listen(port, function() {<br>
   console.log(`Server running on http://localhost:${port}`);<br>
 });<br>
+
 </h3>
 </body>
+ 
 </html>
